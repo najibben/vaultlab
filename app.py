@@ -20,12 +20,15 @@ cur = db.cursor()
 cur.execute("SELECT * from Persons")
 
 # print all the cell of  all the rows
-for row in cur.fetchall():
-    print row[0]
-    print row[1]
-    print row[2]
-    print row[3]
+#for row in cur.fetchall():
+#    print row[0]
+#    print row[1]
+#    print row[2]
+#    print row[3]
 
+rows = cur.fetchall()
+for i, row in enumerate(rows):
+    print "Row", i, "value = ", row
 #for firstname, lastname in cur.fetchall() :
 #        print firstname, lastname
 
