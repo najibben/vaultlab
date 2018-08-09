@@ -14,6 +14,7 @@ db = MySQLdb.connect(host="localhost",    # your host, usually localhost
 #  you execute all the queries you need
 cur = db.cursor()
 
+
 # run a simple select
 
 cur.execute("SELECT * from Persons")
@@ -21,12 +22,14 @@ cur.execute("SELECT * from Persons")
 # print all the cell of  all the rows
 for row in cur.fetchall():
     print row[0]
-    print  row[1]
- 
-
+    print row[1]
+    print row[2]
+    print row[3]
 
 #for firstname, lastname in cur.fetchall() :
 #        print firstname, lastname
 
 
 db.close()
+
+
