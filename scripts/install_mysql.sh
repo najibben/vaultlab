@@ -2,7 +2,7 @@
 #!/usr/bin/env bash
 
 # check if mysql is install
-type mysql >/dev/null 2>&1 && echo "MySQL present." || echo "MySQL not present."
+type mysql >/dev/null 2>&1 && echo "MySQL present."  || echo "MySQL not present."
 
 : '
 > is for redirect
@@ -22,6 +22,11 @@ Therefore >/dev/null 2>&1 is redirect the output of your program to /dev/null. I
 '
 
 # if mysql is not installed install mysql
+: '
+
+script will check if package exits mysql 5.7  and update it if needed
+
+'
 
 #if type mysql >/dev/null 2>&1; then
    
@@ -36,7 +41,7 @@ debconf-set-selections <<< "mysql-server mysql-server/root_password password $PA
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWD"
 apt-get update
 apt-get install -y mysql-server
-
+apt-get install -y python-mysqldb
 #else
 #    echo "Skipping Database dump."
 #fi
