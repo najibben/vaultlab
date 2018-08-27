@@ -1,38 +1,52 @@
 #!/usr/bin/env python
+from warnings import filterwarnings
+import MySQLdb as db
+
+filterwarnings('ignore', category = db.Warning)
+try:
+
+    db_name = 'dbname'
+    con = db.connect(user='najib', passwd='test123')
+    cur = con.cursor()
+    
+    # Create new database
+    cur.execute('CREATE DATABASE IF NOT EXISTS ' + db_name + ';')
+
+    # Create PARAMETERS table
+    cur.execute('DROP TABLE IF EXISTS ' + db_name + '.PARAMETERS;')
+    query = ('CREATE TABLE ' + db_name + '.PARAMETERS ('
+      'idPARAMETERS INT(10) NOT NULL AUTO_INCREMENT, '
+      'Param_name VARCHAR(30) NULL DEFAULT NULL, '
+      'Param_value VARCHAR(255) NULL DEFAULT NULL, '
+      'Timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP '
+      'ON UPDATE CURRENT_TIMESTAMP, '
+      'User_id VARCHAR(20) NULL DEFAULT NULL, '
+      'PRIMARY KEY (idPARAMETERS) );'
+    )
+    cur.execute(query)
+
+    # Insert entries
+    parameters = ['param1', 'param2', 'param3',
+        'param4']
+
+    for i, param_name in enumerate(parameters, start=1):
+        cur.execute('INSERT INTO ' + db_name + '.PARAMETERS '
+            '(idPARAMETERS, Param_name, Param_value, User_id) '
+            'VALUES (' + str(i) + ', %s, %s, %s);',
+            (param_name, '', 'user2@localhost'))
+
+    cur.close()
+    con.commit()
+except Exception, e:
+    print 'Error. Last query: ' + str(cur._last_executed)
+    print e
+print 'DB installation script finished'   
 
 
-# connect to mysql database
-
-import MySQLdb
-
-db = MySQLdb.connect(host="localhost",    # your host, usually localhost
-                     user="najib",         # your username
-                     passwd="test123",  # your password
-                     db="dbname")        # name of the data base
-
-# you must create a Cursor object. It will let
-#  you execute all the queries you need
-cur = db.cursor()
+   
+      
 
 
-# run a simple select
 
-cur.execute("SELECT * from Persons")
-
-# print all the cell of  all the rows
-#for row in cur.fetchall():
-#    print row[0]
-#    print row[1]
-#    print row[2]
-#    print row[3]
-
-rows = cur.fetchall()
-for i, row in enumerate(rows):
-    print "Row", i, "value = ", row
-#for firstname, lastname in cur.fetchall() :
-#        print firstname, lastname
-
-
-db.close()
 
 
