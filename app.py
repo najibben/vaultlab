@@ -7,6 +7,8 @@ import requests
 import time
 import threading
 import sys
+import json
+
 
 # local variables 
 VAULT_ADDR = os.environ['VAULT_ADDR']
@@ -14,32 +16,18 @@ VAULT_TOKEN = os.environ['VAULT_TOKEN']
 
 # connect with Vault secret engine
 client = hvac.Client(url=VAULT_ADDR, token=VAULT_TOKEN)
+    
 
+#load data in Vault secret kv ( just to have initial provisioning)
+data = {
+ "user" : "najib",   
+ "password" : "test123" 
+}
 
-#{'renewable': False, 'data': {'data': {'user': 'name', 'pass': 'word'}, '.metadata': {'destroyed': False, 'deletion_time': '', 'created_time': '2018-06-15T01:31:14.398781526Z', 'version': 1}}, 'request_id': '7f09881f-534e-9e92-cf3a-a0739c8f2dc8', 'lease_duration': 0, 'auth': None, 'wrap_info': None, 'lease_id': '', 'warnings': None}
-print(client.read('secret/data/prometheus'))
-#result = client.read('secret/data/prometheus')['data']['value']
-#print "If there was a birth every 7 seconds, there would be: " result "password"
-def vault_get(name):
-    try:
-        client = vault_client['client']
-    except KeyError:
-        print("Making connection to vault host: {}".format('http://192.168.2.10:8200'))
-        vault_client['client'] = hvac.Client(url='http://192.168.2.10:8200', token='c3ee2b92-143a-9a21-1a79-9900c079894b')
-        client = vault_client['client']
-        print(client.read())
-
-    result = client.read('secret/data/{}'.format(name))
-    if result is None:
-        raise Exception('Unable to find secret {}'.format(name))
-    else:
-        try:
-            logger.info("Retrieved secret from Vault using key {}".format(name))
-            return result['data']['value']
-            
-        except KeyError:
-            logger.error('Unable to find key in response data from Vault')
-            raise Exception('Unable to find key in response data from Vault') 
+# write the secrets
+client.write('secret/data/prometheus', data=data)
+result = client.read('secret/data/prometheus')['data']
+#print result['data']['password']
 
 
 
@@ -56,7 +44,7 @@ def establishConnection(crt,key):
 def apiCheck(crt, key):
     client = establishConnection(crt, key)
 
-    result = client.read('secret/prometheus')['data']['password']
+    result = client.read('secret/prometheus')['data']
 
     # In the above line, the value returned  
 
@@ -66,9 +54,16 @@ filterwarnings('ignore', category = db.Warning)
 try:
 
     db_name = 'dbname'
-    con = db.connect(user='najib', passwd='test123')
+    mysql_username = result ['data'] ['user']
+    #mysql_host = result['data']['value']
+    mysql_pw = result['data'] ['password']
+
+    #con = db.connect(user='najib', passwd='test123')
+    con = db.connect(user=mysql_username, passwd=mysql_pw)
     cur = con.cursor()
     
+    
+
     # Create new database
     cur.execute('CREATE DATABASE IF NOT EXISTS ' + db_name + ';')
 
