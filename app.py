@@ -9,7 +9,6 @@ import threading
 import sys
 import json
 
-
 # local variables 
 VAULT_ADDR = os.environ['VAULT_ADDR']
 VAULT_TOKEN = os.environ['VAULT_TOKEN']
@@ -18,13 +17,14 @@ VAULT_TOKEN = os.environ['VAULT_TOKEN']
 client = hvac.Client(url=VAULT_ADDR, token=VAULT_TOKEN)
     
 
-#load data in Vault secret kv ( just to have initial provisioning)
+#load data in Vault secret kv   TO DELETE ( just to have initial provisioning)
 data = {
  "user" : "najib",   
- "password" : "test123" 
+ "password" : "test123"
+ 
 }
 
-# write the secrets
+# write the secrets TO DELETE from script
 client.write('secret/data/prometheus', data=data)
 result = client.read('secret/data/prometheus')['data']
 #print result['data']['password']
@@ -32,7 +32,7 @@ result = client.read('secret/data/prometheus')['data']
 
 
 def establishConnection(crt,key):
-    client = hvac.Client(url='https://192.168.2.10:8200/v1/sys/internal/ui/mounts/secret/prometheus',
+    client = hvac.Client(url=VAULT_ADDR,
                          verify=False,
                          cert=(crt, key))
     try:
@@ -55,10 +55,8 @@ try:
 
     db_name = 'dbname'
     mysql_username = result ['data'] ['user']
-    #mysql_host = result['data']['value']
     mysql_pw = result['data'] ['password']
 
-    #con = db.connect(user='najib', passwd='test123')
     con = db.connect(user=mysql_username, passwd=mysql_pw)
     cur = con.cursor()
     
@@ -76,9 +74,12 @@ try:
       'Timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP '
       'ON UPDATE CURRENT_TIMESTAMP, '
       'User_id VARCHAR(20) NULL DEFAULT NULL, '
-      'PRIMARY KEY (idPARAMETERS) );'
+      'PRIMARY KEY (idPARAMETERS) );' 
     )
+    
+    
     cur.execute(query)
+    
 
     # Insert entries
     parameters = ['param1', 'param2', 'param3',
@@ -90,6 +91,8 @@ try:
             'VALUES (' + str(i) + ', %s, %s, %s);',
             (param_name, '', 'user2@localhost'))
 
+
+    
     cur.close()
     con.commit()
 except Exception, e:

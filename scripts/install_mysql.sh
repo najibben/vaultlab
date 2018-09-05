@@ -27,6 +27,9 @@ which mysql &>/dev/null || {
   apt-get update
   apt-get install -y mysql-server
   apt-get install -y python-mysqldb
+  sudo apt-get install -y python-pip python-dev build-essential 
+  sudo pip install -y hvac
+  
 
 }
 
