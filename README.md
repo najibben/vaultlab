@@ -11,5 +11,5 @@ sample of vault application
 
 - provision mysql database
 - create user/pass for python app
-- python app to display select from mysql
+- store the credentials in vault kv secret engine
 
