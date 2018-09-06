@@ -53,10 +53,31 @@ which ${PKG} &>/dev/null || {
     popd
 }
 
+# dnsmasq
+which dnsmasq 2>/dev/null || {
+  export DEBIAN_FRONTEND=noninteractive
+  apt-get update
+  apt-get install -y dnsmasq
+}
+
+# dnsmasq conf
+if [ ! -f "/etc/dnsmasq.d/10-consul" ]; then
+	# Creates folder
+	sudo mkdir -p /etc/dnsmasq.d
+	sudo chmod a+w /etc/dnsmasq.d	
+	
+	echo 'server=/consul/127.0.0.1#8600' | tee /etc/dnsmasq.d/10-consul
+	mv /etc/resolv.conf /etc/resolv.conf.orig
+  echo domain consul | tee /etc/resolv.conf
+  echo search consul | tee -a /etc/resolv.conf
+  echo nameserver 127.0.0.1 | tee -a /etc/resolv.conf
+	service dnsmasq restart
+fi
+
 AGENT_CONFIG="-config-dir=/etc/consul.d -enable-script-checks=true"
 sudo mkdir -p /etc/consul.d
-# check for consul hostname or travis => server
-if [[ "${HOSTNAME}" =~ "leader" ]] || [ "${TRAVIS}" == "true" ]; then
+# check for consul hostname => server
+if [[ "${HOSTNAME}" =~ "leader" ]] ; then
   echo server
 
 
