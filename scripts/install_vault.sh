@@ -33,23 +33,26 @@ if [[ "${HOSTNAME}" =~ "leader" ]] ; then
   [ -f /root/.vault-token ] && sudo rm /root/.vault-token
 
   #start vault
+  #sudo /usr/local/bin/vault server -config /etc/vault/data.hcl &>${LOG} &
   sudo /usr/local/bin/vault server  -dev -dev-listen-address=${IP}:8200  &> ${LOG} &
   echo vault started
   sleep 3 
+
+
 
   echo "vault token:"
   cat /root/.vault-token
   echo -e "\nvault token is on /root/.vault-token"
   
   # enable secret KV version 1
-  sudo VAULT_ADDR="http://${IP}:8200" vault secrets enable -version=1 kv
+  sudo VAULT_ADDR="https://${IP}:8200" vault secrets enable -version=1 kv
   
   grep VAULT_TOKEN ~/.bash_profile || {
     echo export VAULT_TOKEN=\`cat /root/.vault-token\` | sudo tee -a ~/.bash_profile
   }
 
   grep VAULT_ADDR ~/.bash_profile || {
-    echo export VAULT_ADDR=http://${IP}:8200 | sudo tee -a ~/.bash_profile
+    echo export VAULT_ADDR=https://${IP}:8200 | sudo tee -a ~/.bash_profile
   }
   
 

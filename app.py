@@ -9,7 +9,7 @@ import threading
 import sys
 import json
 
-# local variables 
+#local variables 
 VAULT_ADDR = os.environ['VAULT_ADDR']
 VAULT_TOKEN = os.environ['VAULT_TOKEN']
 
@@ -99,10 +99,7 @@ except Exception, e:
     print 'Error. Last query: ' + str(cur._last_executed)
     print e
 print 'DB installation script finished'   
-
-
-   
-      
+ 
 
 
 
