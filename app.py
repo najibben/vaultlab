@@ -8,14 +8,33 @@ import time
 import threading
 import sys
 import json
+import requests
+import pprint
+import urllib
+
+
 
 #local variables 
 VAULT_ADDR = os.environ['VAULT_ADDR']
 VAULT_TOKEN = os.environ['VAULT_TOKEN']
 
 # connect with Vault secret engine
-client = hvac.Client(url=VAULT_ADDR, token=VAULT_TOKEN)
-    
+#client = hvac.Client(url=VAULT_ADDR, token=VAULT_TOKEN)
+
+#cmd = '''curl -s --header "X-Vault-Token:$VAULT_TOKEN" --request GET --data @payload.json --insecure http://192.168.2.10:8200/v1/kv/password''' 
+#args = shlex.split(cmd)
+#process = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#stdout, stderr = process.communicate()
+url = "http://192.168.2.10:8200/v1/kv/password"
+headers={'X-Vault-Token':VAULT_TOKEN}
+resp = requests.get(url,headers=headers)
+#print resp.content
+data = resp.json()
+
+result= data['data'] ['value']
+result = result.replace('\n\n', '\n')
+print(result)
+
 
 #load data in Vault secret kv   TO DELETE ( just to have initial provisioning)
 data = {
@@ -24,9 +43,14 @@ data = {
  
 }
 
+
+#for item in resp.json():
+#    for c in item['data']['password']:
+#        print(c['data'])
+
 # write the secrets TO DELETE from script
-client.write('secret/data/prometheus', data=data)
-result = client.read('secret/data/prometheus')['data']
+#client.write('secret/data/prometheus', data=data)
+#result = client.read('secret/data/prometheus')['data']
 #print result['data']['password']
 
 
@@ -54,8 +78,10 @@ filterwarnings('ignore', category = db.Warning)
 try:
 
     db_name = 'dbname'
-    mysql_username = result ['data'] ['user']
-    mysql_pw = result['data'] ['password']
+    mysql_username = 'najib'
+    #mysql_username = result ['data'] ['user']
+    #mysql_pw = result['data'] ['password']
+    mysql_pw = result
 
     con = db.connect(user=mysql_username, passwd=mysql_pw)
     cur = con.cursor()
