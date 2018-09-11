@@ -4,7 +4,8 @@
 #CIDR=`ip addr show ${IFACE} | awk '$2 ~ "192.168.2" {print $2}'`
 #IP=${CIDR%%/24}
 
-IP=127.0.0.1
+#IP=127.0.0.1
+IP=192.168.2.10
 
 if [ -d /vagrant ]; then
   LOG="/vagrant/logs/vault_${HOSTNAME}.log"
@@ -36,7 +37,8 @@ if [[ "${HOSTNAME}" =~ "leader" ]] ; then
 
   #start vault
   #sudo /usr/local/bin/vault server -config /etc/vault/data.hcl &>${LOG} &
-  sudo /usr/local/bin/vault server  -dev -dev-listen-address=${IP}:8200  &> ${LOG} &
+  #sudo /usr/local/bin/vault server  -dev -dev-listen-address=${IP}:8200  &> ${LOG} &
+  sudo /usr/local/bin/vault server -config /vagrant/etc/vault/vault_conf.hcl -dev -dev-listen-address=${IP}:8200    &> ${LOG} &
   echo vault started
   sleep 3 
 

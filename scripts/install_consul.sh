@@ -56,9 +56,10 @@ which ${PKG} &>/dev/null || {
 AGENT_CONFIG="-config-dir=/etc/consul.d -enable-script-checks=true"
 sudo mkdir -p /etc/consul.d
 # check for consul hostname or travis => server
-if [[ "${HOSTNAME}" =~ "leader" ]] || [ "${TRAVIS}" == "true" ]; then
-  echo server
+#if [[ "${HOSTNAME}" =~ "leader" ]] || [ "${TRAVIS}" == "true" ]; then
+if [[ "${HOSTNAME}" =~ "consul" ]] || [ "${TRAVIS}" == "true" ]; then
 
+  echo server
 
   /usr/local/bin/consul members 2>/dev/null || {
 
@@ -71,7 +72,7 @@ if [[ "${HOSTNAME}" =~ "leader" ]] || [ "${TRAVIS}" == "true" ]; then
 else
   echo agent
   /usr/local/bin/consul members 2>/dev/null || {
-    /usr/local/bin/consul agent -client=0.0.0.0 -bind=${IP} ${AGENT_CONFIG} -data-dir=/usr/local/consul -join=${LEADER_IP} >${LOG} &
+    /usr/local/bin/consul agent -client=0.0.0.0 -bind=${IP} ${AGENT_CONFIG} -data-dir=/usr/local/consul -join=192.168.2.11 >${LOG} &
     sleep 10
   }
 fi
