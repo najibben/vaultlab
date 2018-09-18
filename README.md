@@ -22,7 +22,7 @@ This is sample legacyapp that requires user/pass to connect to a db.
 
 * the Vagrantfile will contain provisioning scripts for the VM : leader01--> 192.168.1.10:8200 consul---> 192.168.1.11:8500 . [ backend datastores]
 
-*t he folder scripts will contain all the necesary packages to install all dependencies needed in your VM
+* the folder scripts will contain all the necesary packages to install all dependencies needed in your VM
 
 * the script **appy** will update the database and load parametrizable data into it. Database will be created , and the table PARAMETERS uploaded.
 
