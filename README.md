@@ -20,15 +20,17 @@ The only two requirements to try the labs are
 
 This is sample legacyapp that requires user/pass to connect to a db. 
 
-*the Vagrantfile will contain provisioning scripts for the VM : leader01--> 192.168.1.10:8200 consul---> 192.168.1.11:8500 . [ backend datastores]
+* the Vagrantfile will contain provisioning scripts for the VM : leader01--> 192.168.1.10:8200 consul---> 192.168.1.11:8500 . [ backend datastores]
 
-*the folder scripts will contain all the necesary packages to install all dependencies needed in your VM
+*t he folder scripts will contain all the necesary packages to install all dependencies needed in your VM
 
-*the script **appy** will update the database and load parametrizable data into it. Database will be created , and the table PARAMETERS uploaded.
+* the script **appy** will update the database and load parametrizable data into it. Database will be created , and the table PARAMETERS uploaded.
 
-*ENVCONSUL is used to set the env variables for Vault.
+* ENVCONSUL is used to set the env variables for Vault.
 
-*We setup a Vault node, and using envconsul to run our legacyapp.sh we can get the values from vault.
+* We setup a Vault node, and using envconsul to run our legacyapp.sh we can get the values from vault.
+
+* added a Vault cluster in HA , added new consul agent
 
 ### How to run
 ```
