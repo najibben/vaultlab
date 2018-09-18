@@ -1,7 +1,3 @@
-#!/usr/bin/env bash
-
-# create admin & provisioner policies
-tee policy.hcl <<EOF
 # Manage auth methods broadly across Vault
   path "auth/*"
   {
@@ -32,6 +28,3 @@ tee policy.hcl <<EOF
   {
     capabilities = ["create", "read", "update", "delete", "list", "sudo"]
   }
-EOF
-vault policy write provisioner policy.hcl
-

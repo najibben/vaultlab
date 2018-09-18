@@ -24,7 +24,7 @@ which ${PKG} &>/dev/null || {
 [ -f /usr/local/bin/consul ] &>/dev/null || {
     pushd /usr/local/bin
     [ -f consul_1.2.2_linux_amd64.zip ] || {
-        sudo wget https://releases.hashicorp.com/consul/1.2.2/consul_1.2.2_linux_amd64.zip
+        sudo wget -q https://releases.hashicorp.com/consul/1.2.2/consul_1.2.2_linux_amd64.zip
     }
     sudo unzip consul_1.2.2_linux_amd64.zip
     sudo chmod +x consul
@@ -35,7 +35,7 @@ which ${PKG} &>/dev/null || {
 [ -f /usr/local/bin/consul-template ] &>/dev/null || {
     pushd /usr/local/bin
     [ -f consul-template_0.19.5_linux_amd64.zip ] || {
-        sudo wget https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.zip
+        sudo wget -q https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.zip
     }
     sudo unzip consul-template_0.19.5_linux_amd64.zip
     sudo chmod +x consul-template
@@ -46,7 +46,7 @@ which ${PKG} &>/dev/null || {
 [ -f /usr/local/bin/envconsul ] &>/dev/null || {
     pushd /usr/local/bin
     [ -f envconsul_0.7.3_linux_amd64.zip ] || {
-        sudo wget https://releases.hashicorp.com/envconsul/0.7.3/envconsul_0.7.3_linux_amd64.zip
+        sudo wget -q https://releases.hashicorp.com/envconsul/0.7.3/envconsul_0.7.3_linux_amd64.zip
     }
     sudo unzip envconsul_0.7.3_linux_amd64.zip
     sudo chmod +x envconsul
@@ -56,25 +56,23 @@ which ${PKG} &>/dev/null || {
 AGENT_CONFIG="-config-dir=/etc/consul.d -enable-script-checks=true"
 sudo mkdir -p /etc/consul.d
 # check for consul hostname or travis => server
-#if [[ "${HOSTNAME}" =~ "leader" ]] || [ "${TRAVIS}" == "true" ]; then
 if [[ "${HOSTNAME}" =~ "consul" ]] || [ "${TRAVIS}" == "true" ]; then
 
-  echo server
+	echo server
 
-  /usr/local/bin/consul members 2>/dev/null || {
-
-      sudo /usr/local/bin/consul agent -server -ui -client=0.0.0.0 -bind=${IP} ${AGENT_CONFIG} -data-dir=/usr/local/consul -bootstrap-expect=1 >${LOG} &
-    
-    sleep 5
-
-
-  }
+	/usr/bin/consul members 2>/dev/null || {
+		echo "Starting Consul cluster ..."
+        sudo /usr/local/bin/consul agent -server -ui -client=0.0.0.0 -bind=${IP} -config-file=/vagrant/etc/consul.d/server.json >${LOG} &
+        sleep 5
+	}
 else
-  echo agent
-  /usr/local/bin/consul members 2>/dev/null || {
-    /usr/local/bin/consul agent -client=0.0.0.0 -bind=${IP} ${AGENT_CONFIG} -data-dir=/usr/local/consul -join=192.168.2.11 >${LOG} &
-    sleep 10
-  }
+	echo client
+
+	/usr/local/bin/consul members 2>/dev/null || {
+    /usr/local/bin/consul agent -config-dir=/vagrant/etc/consul.d/client.json  >${LOG} &  
+    /usr/local/bin/consul agent -config-dir=/vagrant/etc/consul.d/client2.json  >${LOG} &  
+   sleep 10
+	}
 fi
 
 echo consul started

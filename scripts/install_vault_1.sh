@@ -43,8 +43,8 @@ if [[ "${HOSTNAME}" =~ "leader" ]] ; then
   [ -f /root/.vault-token ] && sudo rm /root/.vault-token
 
   #start vault
-  sudo cp  /vagrant/etc/consul.d/client.json  /etc/consul.d/
-  sudo /usr/local/bin/vault server -config /vagrant/etc/vault/vault_conf.hcl -dev -dev-listen-address=${IP}:8200   &> ${LOG} &
+  sudo cp  /vagrant/etc/consul.d/client2.json  /etc/consul.d/
+  sudo /usr/local/bin/vault server -config /vagrant/etc/vault/vault_conf_1.hcl  -dev -dev-listen-address=${IP}:8200   &> ${LOG} &
   echo vault started
   sleep 3 
 
@@ -55,7 +55,6 @@ if [[ "${HOSTNAME}" =~ "leader" ]] ; then
   
   # enable secret KV version 1
   sudo VAULT_ADDR="http://${IP}:8200" vault secrets enable -version=1 kv
-  
   grep VAULT_TOKEN ~/.bash_profile || {
     echo export VAULT_TOKEN=\`cat /root/.vault-token\` | sudo tee -a ~/.bash_profile
   }
