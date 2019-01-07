@@ -89,10 +89,3 @@ Please read [CONTRIBUTING.md](git@github.com:najibben/vaultlab1.git) you can sen
 
 See also the list of [contributors](https://github.com/vaultlab1/contributors) who participated in this project.
 
-## License
-
-This project is for trainning only , no LICENCED file ( at the moment)  for details
-
-## Acknowledgments
-
-* Thanks to Hashicorp
