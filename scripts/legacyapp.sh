@@ -2,6 +2,7 @@
 
 export USER=$kv_user_value
 export PASSWD=$kv_pass_value
+DBNAME=dbname
 
 # create db
 echo -e "Setting up our MySQL user and db"
@@ -11,4 +12,6 @@ mysql -uroot -p$PASSWD -e "grant all privileges on $DBNAME.* to '$USER'@'localho
 
 # test user and password
 mysql -u "$USER" -p"$PASSWD" -e "SHOW DATABASES"
+
+
 
