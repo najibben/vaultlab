@@ -1,5 +1,5 @@
 
-#  cluster vault
+# Go SDK program to XoR the token bytes with the given OTP
 
 integrate vault with consul storage backend 
 
