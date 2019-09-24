@@ -1,7 +1,7 @@
 
-# vaultlab1 
+#  cluster vault
 
-this first lab to integrate vault in consul backend and storage the DB credentials securely.
+integrate vault with consul storage backend 
 
 ## Getting Started
 
@@ -18,29 +18,18 @@ The only two requirements to try the labs are
 
 ### What 
 
-This is sample legacyapp that requires user/pass to connect to a db. 
 
-* the Vagrantfile will contain provisioning scripts for the VM : leader01--> 192.168.1.10:8200 consul---> 192.168.1.11:8500 . [ backend datastores]
+* the Vagrantfile will contain provisioning scripts for the VM : leader01--> 192.168.2.14:8200 leader02-->192.168.2.1:8200  consul---> 192.168.1.11:8500 . [ backend datastores]
 
 * the folder scripts will contain all the necesary packages to install all dependencies needed in your VM
 
-* the script **appy** will update the database and load parametrizable data into it. Database will be created , and the table PARAMETERS uploaded.
+* the go sdk programa **token.go** will do the XoR final operation to decode a root token in the new format.
 
-* ENVCONSUL is used to set the env variables for Vault.
-
-* We setup a Vault node, and using envconsul to run our legacyapp.sh we can get the values from vault.
-
-* added a Vault cluster in HA , added new consul agent
 
 ### How to run
 ```
 vagrant ssh leader01
 sudo su -
-cd /vagrant/scripts; ./bash_vault.sh
-```
-
-```
-Give examples
 ```
 
 ### Installing
@@ -48,36 +37,21 @@ Give examples
 ```
 vagrant up
 
+vagrant ssh leader01
+
+export VAULT_ADDR=https://192.168.2.14:8200
+export VAULT_CACERT="/vagrant/etc/vault/mydomain.com.crt"
+
 ```
 
 ## Running the tests
 
 Travis is used for testing purposes
 
-### Break down into end to end tests
-
-on progress
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ## Deployment
 
 you can deploy your VM in any cloud environment
-
-
-## Contributing
-
-Please read [CONTRIBUTING.md](git@github.com:najibben/vaultlab1.git) you can send a PR for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 

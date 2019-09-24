@@ -18,6 +18,7 @@ which ${PKG} &>/dev/null || {
   export DEBIAN_FRONTEND=noninteractive
   apt-get update
   apt-get install -y ${PKG}
+
 }
 
 # check consul binary

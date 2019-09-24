@@ -45,7 +45,7 @@ if [[ "${HOSTNAME}" =~ "leader" ]] ; then
   #start vault
   sudo cp  /vagrant/etc/consul.d/client2.json  /etc/consul.d/
   #sudo /usr/local/bin/vault server -log-level=trace  -config /vagrant/etc/vault/vault_conf_1.hcl  -dev -dev-listen-address=${IP}:8200   &> ${LOG} &
-  sudo /usr/local/bin/vault server  -config /vagrant/etc/vault/vault_conf_1.hcl  &> ${LOG} &
+  sudo /usr/local/bin/vault server -config /vagrant/etc/vault/vault_conf_1.hcl  &> ${LOG} &
   echo vault started
   sleep 3 
 
