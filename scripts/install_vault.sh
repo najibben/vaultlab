@@ -16,7 +16,7 @@ which vault &>/dev/null || {
     # Vault is expected to be present in /vagrant/pkg
     # Naming convention is vault-enterprise_1.2.2+prem_linux_amd64
 
-    vault_package_file=`ls /vagrant/pkg/vault-enterprise_*+prem_linux_amd64.zip | sort -r | head -1`
+    vault_package_file=`ls /vagrant/pkg/vault_1.3.1_linux_amd64.zip  | sort -r | head -1`
 
     if [ -f "${vault_package_file}" ]; then
         echo "Installing Vault"
