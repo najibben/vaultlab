@@ -42,6 +42,9 @@ export PATH=$PATH:$GOPATH/bin
 sudo su -
  go get -u github.com/mitchellh/gox
  go install github.com/mitchellh/gox
+ go get -u github.com/hashicorp/errwrap.git
+ go install  github.com/hashicorp/errwrap
+ 
 export GOPATH="/home/vagrant/workspace" | sudo tee -a ~/.bash_profile
 PATH=$PATH:$GOPATH/bin | sudo tee -a ~/.bash_profile
 
